@@ -1,0 +1,51 @@
+logging:
+  level:
+    root: ERROR
+    org.springframework.boot: INFO
+
+spring:
+
+  devtools:
+    livereload:
+      port: 35728
+
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:oracle:thin:@10.0.23.130:1521:sedonew
+    username: sedo_new
+    password: sedo_new@23
+    hikari:
+      poolName: Hikari
+      auto-commit: false
+      minimum-idle: 5
+      maximum-pool-size: 20
+
+  jpa:
+    database-platform: org.hibernate.dialect.Oracle12cDialect
+    database: ORACLE
+    show-sql: false
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate.id.new_generator_mappings: true
+      hibernate.connection.provider_disables_autocommit: true
+      hibernate.cache.use_second_level_cache: false
+      hibernate.cache.use_query_cache: false
+      hibernate.generate_statistics: true
+server:
+  port: 8040
+  max-http-header-size: 4KB
+
+telegram-bot:
+  username: yernazoratbot
+  token: 1884488768:AAEwrX3TymqLYlVixtRkkdCQGQyheWgFyyg
+
+fixedDelay:
+  in:
+    milliseconds: 5000
+
+storage:
+  info-url: https://file.prokuratura.uz/file-server/infoFile
+  upload-url: https://file.prokuratura.uz/file-server/uploadFile
+  domain-find: file.prokuratura.uz
+  client-id: yer-nazorat-bot
