@@ -13,6 +13,7 @@ import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import uz.pr.yer_nazorat_bot.events.DeleteMessageEvent;
+import uz.pr.yer_nazorat_bot.events.MessageSendEvent;
 import uz.pr.yer_nazorat_bot.events.SendMessageEvent;
 import uz.pr.yer_nazorat_bot.events.UpdateInitializeEvent;
 import uz.pr.yer_nazorat_bot.utils.EventCreater;
@@ -48,7 +49,7 @@ public class TelegramBotInitialization extends TelegramLongPollingBot {
     public void sendMessageExecute(EventCreater<SendMessage> messageEvent) {
         SendMessage sendMessage = messageEvent.get();
         try {
-            execute(sendMessage);
+            publisher.publishEvent(new MessageSendEvent(execute(sendMessage)));
             log.info("Message is sended {}", sendMessage);
         } catch (Exception e) {
             log.error("Exception while send message {} to user: {}", sendMessage, e.getMessage());

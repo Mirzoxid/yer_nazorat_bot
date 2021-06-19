@@ -22,6 +22,7 @@ public class UpdateMessageService {
     private final ApplicationEventPublisher publisher;
     private final UserStateMapComponent userStateMap;
     private final TgBotUserService tgBotUserService;
+    private final AppealRegistrationService appealRegistrationService;
 
     public void messageUpdate(Message message) {
         if (message.isCommand()) {
@@ -30,8 +31,22 @@ public class UpdateMessageService {
             tgBotUserService.createBotUser(message.getFrom().getUserName(), message.getContact());
             publisher.publishEvent(new SendMessageEvent(generateStartMessage(message)));
             userStateMap.putUserStateMap(message.getChatId().toString(), "stateType", UserStateType.WAIT);
+        } else if (message.hasText()){
+            loadMessage(message);
+        } else if (message.hasDocument() || message.hasPhoto()){
+            appealRegistrationService.nextSteepPhotoAndDocument(message);
+        }
+    }
+
+    private void loadMessage(Message message){
+        Map<String, Object> userState = userStateMap.getUserStateMap(message.getChatId().toString());
+        if (Objects.equals(userState.get("stateType"), UserStateType.REGISTER_APPIAL.name())) {
+            appealRegistrationService.nextSteepMessage(message, userState);
         } else {
-            userStateMap.putUserStateMap(message.getChatId().toString(), "stateType", UserStateType.REGISTER_APPIAL);
+            if ("Хабар қолдириш".equals(message.getText())) {
+                userStateMap.putUserStateMap(message.getChatId().toString(), "stateType", UserStateType.REGISTER_APPIAL);
+                appealRegistrationService.startRegistration(message, userState);
+            }
         }
     }
 

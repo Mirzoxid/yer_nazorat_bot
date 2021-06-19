@@ -1,7 +1,9 @@
 package uz.pr.yer_nazorat_bot.components;
 
 import lombok.RequiredArgsConstructor;
+import org.checkerframework.checker.units.qual.s;
 import org.springframework.stereotype.Component;
+import uz.pr.yer_nazorat_bot.enums.RegisterStateType;
 import uz.pr.yer_nazorat_bot.enums.UserStateType;
 
 import java.util.HashMap;
@@ -28,9 +30,27 @@ public class UserStateMapComponent {
         return this.stateMap.put(userId, userState);
     }
 
-    public Map<String, Object> putUserStateMap(String userId, String stateType, UserStateType userStateType) {
+    public void putUserStateMap(String userId, String stateType, UserStateType userStateType) {
         Map<String, Object> objectMap = getUserStateMap(userId);
         objectMap.put(stateType, userStateType.name());
-        return this.stateMap.put(userId, objectMap);
+        this.stateMap.put(userId, objectMap);
+    }
+
+    public void putUserStateMap(String userId, String stateType, RegisterStateType registerStateType) {
+        Map<String, Object> objectMap = getUserStateMap(userId);
+        objectMap.put(stateType, registerStateType.name());
+        this.stateMap.put(userId, objectMap);
+    }
+
+    public void putUserStateMap(String userId, String stateType, Object o) {
+        Map<String, Object> objectMap = getUserStateMap(userId);
+        objectMap.put(stateType, o);
+        this.stateMap.put(userId, objectMap);
+    }
+
+    public void endRegisterState(String userId) {
+        Map<String, Object> stateMap = new HashMap<>();
+        stateMap.put("stateType", UserStateType.WAIT);
+        this.stateMap.put(userId, stateMap);
     }
 }

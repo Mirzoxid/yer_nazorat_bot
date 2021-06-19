@@ -41,4 +41,8 @@ public class TgBotUserService {
     public boolean hasRegistered(String chatId) {
         return tgBotUserRepository.findByTgChatId(chatId).isPresent();
     }
+
+    public TgUser getUser(String chatId){
+        return tgBotUserRepository.findByTgChatId(chatId).orElse(null);
+    }
 }

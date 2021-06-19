@@ -1,6 +1,7 @@
 package uz.pr.yer_nazorat_bot.enteties;
 
 import lombok.Data;
+import uz.pr.yer_nazorat_bot.enums.NazoratMessageStatus;
 import uz.pr.yer_nazorat_bot.enums.QonunBuzilishTuri;
 import uz.pr.yer_nazorat_bot.enums.YerTuri;
 
@@ -16,8 +17,11 @@ public class NazoratMessage {
     private Long id;
 
     @ManyToOne
-    @Column(nullable = false)
+    @JoinColumn(name = "tg_user_id", nullable = false)
     private TgUser tgUser;
+
+    @Enumerated(EnumType.STRING)
+    private NazoratMessageStatus messageStatus;
 
     @Enumerated(EnumType.STRING)
     private YerTuri yerTuri;
