@@ -37,8 +37,8 @@ server:
   max-http-header-size: 4KB
 
 telegram-bot:
-  username: yernazoratbot
-  token: 1884488768:AAEwrX3TymqLYlVixtRkkdCQGQyheWgFyyg
+  username: yernazoratidev_bot
+  token: 1872268463:AAFjYZVUTAkytIdynJrgu2NUu1qTjxtF2Vs
 
 fixedDelay:
   in:

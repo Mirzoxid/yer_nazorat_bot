@@ -92,7 +92,7 @@ public class AppealRegistrationService {
             Document document = message.getDocument();
             Map<String, Object> userState = userStateMap.getUserStateMap(message.getFrom().getId().toString());
             if (userState.containsKey("nazoratMessageId") && Objects.nonNull(userState.get("nazoratMessageId"))) {
-                Optional<NazoratMessage> nazoratMessage = nazoratMessageRepository.findById((Long) userState.get("nazoratMessageId"));
+                Optional<NazoratMessage> nazoratMessage = nazoratMessageRepository.findById(Long.valueOf(userState.get("nazoratMessageId").toString()));
                 NazoratMessageFiles nazoratMessageFiles = new NazoratMessageFiles();
                 nazoratMessageFiles.setNazoratMessage(nazoratMessage.get());
                 nazoratMessageFiles.setTgFileId(document.getFileId());
@@ -105,7 +105,7 @@ public class AppealRegistrationService {
             Map<String, Object> userState = userStateMap.getUserStateMap(message.getFrom().getId().toString());
             if (userState.containsKey("nazoratMessageId") && Objects.nonNull(userState.get("nazoratMessageId"))) {
                 NazoratMessageFiles nazoratMessageFiles = new NazoratMessageFiles();
-                Optional<NazoratMessage> nazoratMessage = nazoratMessageRepository.findById((Long) userState.get("nazoratMessageId"));
+                Optional<NazoratMessage> nazoratMessage = nazoratMessageRepository.findById(Long.valueOf(userState.get("nazoratMessageId").toString()));
                 nazoratMessageFiles.setNazoratMessage(nazoratMessage.get());
                 nazoratMessageFiles.setTgFileId(photoSizes.get(photoSizes.size() - 1).getFileId());
                 nazoratMessageFiles.setIsDeleted(0);
@@ -158,7 +158,7 @@ public class AppealRegistrationService {
         Long id = Long.parseLong(callbackQuery.getData());
 
         //Nazorat message save
-        Optional<NazoratMessage> nazoratMessageO = nazoratMessageRepository.findById((Long) userState.get("nazoratMessageId"));
+        Optional<NazoratMessage> nazoratMessageO = nazoratMessageRepository.findById(Long.valueOf(userState.get("nazoratMessageId").toString()));
         NazoratMessage nazoratMessage = nazoratMessageO.get();
         nazoratMessage.setRegion(regionRepository.getById(id));
         nazoratMessageRepository.save(nazoratMessage);
@@ -191,7 +191,7 @@ public class AppealRegistrationService {
         Long id = Long.parseLong(callbackQuery.getData());
 
         //Nazorat message save
-        Optional<NazoratMessage> nazoratMessageO = nazoratMessageRepository.findById((Long) userState.get("nazoratMessageId"));
+        Optional<NazoratMessage> nazoratMessageO = nazoratMessageRepository.findById(Long.valueOf(userState.get("nazoratMessageId").toString()));
         NazoratMessage nazoratMessage = nazoratMessageO.get();
         nazoratMessage.setDistrict(districtRepository.getById(id));
         nazoratMessageRepository.save(nazoratMessage);
@@ -221,7 +221,7 @@ public class AppealRegistrationService {
     private SendMessage addressInputData(CallbackQuery callbackQuery, Map<String, Object> userState) {
 
         //Nazorat message save
-        Optional<NazoratMessage> nazoratMessageO1 = nazoratMessageRepository.findById((Long) userState.get("nazoratMessageId"));
+        Optional<NazoratMessage> nazoratMessageO1 = nazoratMessageRepository.findById(Long.valueOf(userState.get("nazoratMessageId").toString()));
         NazoratMessage nazoratMessage1 = nazoratMessageO1.get();
         nazoratMessage1.setQonunBuzilishTuri(QonunBuzilishTuri.valueOf(callbackQuery.getData()));
         nazoratMessageRepository.save(nazoratMessage1);
@@ -236,7 +236,7 @@ public class AppealRegistrationService {
 
     private SendMessage qonunBuzilishTuriSelectData(CallbackQuery callbackQuery, Map<String, Object> userState) {
         //Nazorat message save
-        Optional<NazoratMessage> nazoratMessageO = nazoratMessageRepository.findById((Long) userState.get("nazoratMessageId"));
+        Optional<NazoratMessage> nazoratMessageO = nazoratMessageRepository.findById(Long.valueOf(userState.get("nazoratMessageId").toString()));
         NazoratMessage nazoratMessage = nazoratMessageO.get();
         nazoratMessage.setYerTuri(YerTuri.valueOf(callbackQuery.getData()));
         nazoratMessageRepository.save(nazoratMessage);
@@ -288,17 +288,16 @@ public class AppealRegistrationService {
     }
 
     private SendMessage sendMessageInformationRegisterData(Message message, Map<String, Object> userState) {
-
         String address = message.getText();
 
         //Nazorat message save
-        Optional<NazoratMessage> nazoratMessageO = nazoratMessageRepository.findById((Long) userState.get("nazoratMessageId"));
+        Optional<NazoratMessage> nazoratMessageO = nazoratMessageRepository.findById(Long.valueOf(userState.get("nazoratMessageId").toString()));
         NazoratMessage nazoratMessage = nazoratMessageO.get();
         nazoratMessage.setAddress(address);
         nazoratMessageRepository.save(nazoratMessage);
 
         SendMessage msg = new SendMessage();
-        Optional<NazoratMessage> nazoratMessageO1 = nazoratMessageRepository.findById((Long) userState.get("nazoratMessageId"));
+        Optional<NazoratMessage> nazoratMessageO1 = nazoratMessageRepository.findById(Long.valueOf(userState.get("nazoratMessageId").toString()));
         NazoratMessage nazoratMessage1 = nazoratMessageO1.get();
         String msgText = "- " + nazoratMessage1.getRegion().getName() + "\n";
         msgText += "- " + nazoratMessage1.getDistrict().getName() + "\n";
@@ -312,7 +311,7 @@ public class AppealRegistrationService {
 
     private SendMessage finishDataSave(Message message, Map<String, Object> userState) {
         //Nazorat message save
-        Optional<NazoratMessage> nazoratMessageO = nazoratMessageRepository.findById((Long) userState.get("nazoratMessageId"));
+        Optional<NazoratMessage> nazoratMessageO = nazoratMessageRepository.findById(Long.valueOf(userState.get("nazoratMessageId").toString()));
         NazoratMessage nazoratMessage = nazoratMessageO.get();
         if (Objects.nonNull(nazoratMessage.getXabarMazmuni())){
             nazoratMessage.setXabarMazmuni(message.getText());
@@ -348,7 +347,7 @@ public class AppealRegistrationService {
     }
 
     private void checkAndEndRegister(Message message, Map<String, Object> userState) {
-        Optional<NazoratMessage> nazoratMessageO = nazoratMessageRepository.findById((Long) userState.get("nazoratMessageId"));
+        Optional<NazoratMessage> nazoratMessageO = nazoratMessageRepository.findById((Long.valueOf(userState.get("nazoratMessageId").toString())));
         NazoratMessage nazoratMessage = nazoratMessageO.get();
         List<NazoratMessageFiles> nazoratMessageFiles = nazoratMessageFileRepository.findAllByNazoratMessageId(nazoratMessage.getId());
         if (nazoratMessageFiles.size() >= 2 && !nazoratMessage.getXabarMazmuni().isEmpty()){

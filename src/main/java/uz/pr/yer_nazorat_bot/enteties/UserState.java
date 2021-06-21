@@ -3,6 +3,7 @@ package uz.pr.yer_nazorat_bot.enteties;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.time.Instant;
 
 @Entity
 @Table(name = "ynb_user_state")
@@ -16,4 +17,8 @@ public class UserState {
 
     @Column(columnDefinition = "clob")
     private String stateData;
+
+    private Instant createdDate = Instant.now();
+
+    private Instant updatedDate;
 }
