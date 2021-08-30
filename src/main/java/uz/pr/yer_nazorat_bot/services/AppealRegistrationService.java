@@ -350,13 +350,24 @@ public class AppealRegistrationService {
         Optional<NazoratMessage> nazoratMessageO = nazoratMessageRepository.findById((Long.valueOf(userState.get("nazoratMessageId").toString())));
         NazoratMessage nazoratMessage = nazoratMessageO.get();
         List<NazoratMessageFiles> nazoratMessageFiles = nazoratMessageFileRepository.findAllByNazoratMessageId(nazoratMessage.getId());
-        if (nazoratMessageFiles.size() >= 2 && !nazoratMessage.getXabarMazmuni().isEmpty()){
+        if (nazoratMessageFiles.size() >= 2 && nazoratMessage.getXabarMazmuni() != null && !nazoratMessage.getXabarMazmuni().isEmpty()){
             nazoratMessage.setMessageStatus(NazoratMessageStatus.NEW);
             nazoratMessageRepository.save(nazoratMessage);
             SendMessage sendMessage = new SendMessage();
             sendMessage.setChatId(message.getChatId().toString());
             sendMessage.setText("Хабарингиз қабул қилинди!\n" +
                     "Хабарингиз кўриб чиқилиб, таъсирчан чоралар қўлланилади!");
+            sendMessage.setReplyMarkup(new ReplyKeyboardMarkup() {{
+                setKeyboard(new ArrayList<KeyboardRow>() {{
+                    add(new KeyboardRow() {{
+                        add(new KeyboardButton() {{
+                            setText("Хабар қолдириш");
+                        }});
+                    }});
+                }});
+                setResizeKeyboard(true);
+                setOneTimeKeyboard(true);
+            }});
             userStateMap.endRegisterState(message.getChatId().toString());
             publisher.publishEvent(new SendMessageEvent(sendMessage));
         } else {
@@ -385,4 +396,11 @@ public class AppealRegistrationService {
         }
     }
 
+    public List<NazoratMessageFiles> findAllByFileUrlIsNull() {
+        return nazoratMessageFileRepository.findAllByFileUrlIsNull();
+    }
+
+    public void saveMessageFile(NazoratMessageFiles nazoratMessageFile) {
+        nazoratMessageFileRepository.save(nazoratMessageFile);
+    }
 }

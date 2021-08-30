@@ -10,4 +10,6 @@ import java.util.List;
 @Repository
 public interface NazoratMessageFileRepository extends JpaRepository<NazoratMessageFiles, Long> {
     List<NazoratMessageFiles> findAllByNazoratMessageId(Long id);
+
+    List<NazoratMessageFiles> findAllByFileUrlIsNull();
 }
