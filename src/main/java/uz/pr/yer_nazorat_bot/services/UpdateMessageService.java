@@ -35,6 +35,7 @@ public class UpdateMessageService {
             loadMessage(message);
         } else if (message.hasDocument() || message.hasPhoto()){
             appealRegistrationService.nextSteepPhotoAndDocument(message);
+//            test
         }
     }
 
